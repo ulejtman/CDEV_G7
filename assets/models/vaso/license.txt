@@ -1,0 +1,11 @@
+Model Information:
+* title:	Plastic Glass
+* source:	https://sketchfab.com/3d-models/plastic-glass-e11aef5942464f59bc1364548613c407
+* author:	okilsketchfab (https://sketchfab.com/okilsketchfab)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Plastic Glass" (https://sketchfab.com/3d-models/plastic-glass-e11aef5942464f59bc1364548613c407) by okilsketchfab (https://sketchfab.com/okilsketchfab) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

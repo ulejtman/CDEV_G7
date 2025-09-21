@@ -1,0 +1,465 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 43448,
+      "max": [
+        0.037500008940696716,
+        0.037500008940696716,
+        0.2399998903274536
+      ],
+      "min": [
+        -0.037500008940696716,
+        -0.037500008940696716,
+        -1.1801719779214181e-07
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 521376,
+      "componentType": 5126,
+      "count": 43448,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 43448,
+      "max": [
+        0.9999241828918457,
+        0.9988765120506287
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 187200,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1042752,
+      "componentType": 5126,
+      "count": 16067,
+      "max": [
+        0.018106471747159958,
+        0.018070217221975327,
+        0.14570322632789612
+      ],
+      "min": [
+        -0.018106471747159958,
+        -0.018070217221975327,
+        0.08823494613170624
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1235556,
+      "componentType": 5126,
+      "count": 16067,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 347584,
+      "componentType": 5126,
+      "count": 16067,
+      "max": [
+        0.5516758561134338,
+        0.7002202868461609
+      ],
+      "min": [
+        0.23194831609725952,
+        0.5611600279808044
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 748800,
+      "componentType": 5125,
+      "count": 72960,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1428360,
+      "componentType": 5126,
+      "count": 1228,
+      "max": [
+        0.03616701811552048,
+        0.019903073087334633,
+        0.034245558083057404
+      ],
+      "min": [
+        -0.03616701811552048,
+        -0.036169905215501785,
+        -0.06720416247844696
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1443096,
+      "componentType": 5126,
+      "count": 1228,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 476120,
+      "componentType": 5126,
+      "count": 1228,
+      "max": [
+        0.9574741125106812,
+        0.99609375
+      ],
+      "min": [
+        0.04080066457390785,
+        0.003906250465661287
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 1040640,
+      "componentType": 5125,
+      "count": 4656,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "smakologg (https://sketchfab.com/smakologg)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/jack-daniels-whiskey-alcohol-by-smakologg-c6767ab4ce0b4a5897f3f74b58175654",
+      "title": "Jack Daniels - whiskey [alcohol] - by smakologg"
+    },
+    "generator": "Sketchfab-16.15.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 1059264,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 485944,
+      "byteOffset": 1059264,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1457832,
+      "byteOffset": 1545208,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 3003040,
+      "uri": "scene.bin"
+    }
+  ],
+  "extensionsUsed": [
+    "KHR_materials_specular"
+  ],
+  "images": [
+    {
+      "uri": "textures/etiqueta_baseColor.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 1.0
+        }
+      },
+      "name": "glass",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.3206165176906652,
+          0.083280790340381,
+          0.0,
+          1.0
+        ],
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "etiqueta",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.9962600221573651
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "botella-jd_glass_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "etiqueta-tapa-jd_etiqueta_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "etiqueta-botella-jd_etiqueta_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 9,
+            "POSITION": 8,
+            "TEXCOORD_0": 10
+          },
+          "indices": 11,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "untitled.fbx_Collection.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4,
+        5,
+        7
+      ],
+      "matrix": [
+        1669.03173828125,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        -0.0002719197847273106,
+        -1669.031738281228,
+        0.0,
+        0.0,
+        1669.031738281228,
+        -0.0002719197847273106,
+        0.0,
+        -0.11107555031776428,
+        0.025210529565811157,
+        -2.941018450997035e-08,
+        1.0
+      ],
+      "name": "botella-jd"
+    },
+    {
+      "mesh": 0,
+      "name": "botella-jd_glass_0"
+    },
+    {
+      "children": [
+        6
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.4551915228366852e-10,
+        5.057444463218985e-10,
+        0.09439663589000702,
+        1.0
+      ],
+      "name": "etiqueta-tapa-jd"
+    },
+    {
+      "mesh": 1,
+      "name": "etiqueta-tapa-jd_etiqueta_0"
+    },
+    {
+      "children": [
+        8
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.4551915228366852e-10,
+        5.057444463218985e-10,
+        0.09439663589000702,
+        1.0
+      ],
+      "name": "etiqueta-botella-jd"
+    },
+    {
+      "mesh": 2,
+      "name": "etiqueta-botella-jd_etiqueta_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    }
+  ]
+}
