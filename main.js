@@ -105,11 +105,12 @@ const mesaLoader = new GLTFLoader();
 mesaLoader.load(
   'assets/models/mesa/scene.gltf',
   function (gltf) {
-    gltf.scene.position.x = 0;
+    gltf.scene.position.x = -38;
     gltf.scene.position.y = 10; // Misma altura que la botella y vaso
-    gltf.scene.position.z = 10;
-    gltf.scene.rotation.y = Math.PI;
-    gltf.scene.scale.set(6, 6, 6); // Escala aumentada para mejor visibilidad
+    gltf.scene.position.z = -2.5;
+    gltf.scene.rotation.y = Math.PI / 2; // Rotar 180 grados en el eje Y
+    //gltf.scene.rotation.x = Math.PI * 2; // Rotar 90 grados en el eje X
+    gltf.scene.scale.set(7, 7, 7); // Escala aumentada para mejor visibilidad
     
     // Configurar materiales y sombras de la mesa
     gltf.scene.traverse((child) => {
@@ -136,7 +137,7 @@ botellaLoader.load(
   'assets/models/botella/botella.gltf',
   function (gltf) {
     gltf.scene.position.x = 0;
-    gltf.scene.position.y = -22.3; // Sobre la mesa
+    gltf.scene.position.y = -21.3; // Sobre la mesa
     gltf.scene.position.z = -2.8;
     gltf.scene.rotation.y = Math.PI;
     gltf.scene.scale.set(0.5, 0.5, 0.5);
@@ -159,7 +160,7 @@ vasoLoader.load(
   'assets/models/vaso/vaso.gltf',
   function (gltf) {
     gltf.scene.position.x = 1;
-    gltf.scene.position.y = -22.3; // Sobre la mesa
+    gltf.scene.position.y = -21.3; // Sobre la mesa
     gltf.scene.position.z = -2.8;
     gltf.scene.rotation.y = Math.PI;
     gltf.scene.scale.set(0.5, 0.5, 0.5);
@@ -325,7 +326,7 @@ function animate() {
     } else {
       // Volver la botella a su posición original
       modeloGLTF.position.x = 0;
-      modeloGLTF.position.y = -22.3;
+      modeloGLTF.position.y = -21.3;
       modeloGLTF.rotation.z = 0;
     }
   }
