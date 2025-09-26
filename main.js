@@ -32,7 +32,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.set(7, -23, 0); // Posicionar la cámara cerca del suelo del skybox expandido
+camera.position.set(7, -23, -9); // Posicionar la cámara cerca del suelo del skybox expandido
 
 
 // Ya se creó el renderer anteriormente
@@ -176,15 +176,18 @@ vasoLoader.load(
 
     // Crear el líquido en el vaso
     const geometry = new THREE.CylinderGeometry(0.85, 0.85, 0.05, 32);
+    // Mover el punto de origen a la parte superior del cilindro
+    geometry.translate(0, 0.025, 0); // La mitad de la altura (0.05/2)
+
     const material = new THREE.MeshPhongMaterial({
-      color: '#7a5230',
-      transparent: false,
-      shininess: 30,
-      specular: 0x666666
+        color: '#7a5230',
+        transparent: false,
+        shininess: 30,
+        specular: 0x666666
     });
+    // ACA FIJARSE SI SE PUEDE HACER EL MATERIAL TRANSPARENTE Y QUE SE VUELVA DE COLOR UNA VEZ QUE CAIGA EL LIQUIDO SOBRE LA BOTELLA
     liquidoMesh = new THREE.Mesh(geometry, material);
     liquidoMesh.position.y = -0.3;
-    liquidoMesh.position.z = 0;
     gltf.scene.add(liquidoMesh);
 
     scene.add(gltf.scene);
@@ -318,8 +321,8 @@ function animate() {
 
         if (distancia < 2.0 && botellaInclinada && liquidoAltura < liquidoAlturaMax) {
           liquidoAltura += 0.01;
-          liquidoMesh.scale.y = liquidoAltura * 50;
-          liquidoMesh.position.y = -0.3 //+ (liquidoAltura * 0.8);
+          liquidoMesh.scale.y = liquidoAltura * 17;
+          liquidoMesh.position.y = 0.3 //+ (liquidoAltura * 0.8);
         }
       }
     } else {
