@@ -1,4 +1,3 @@
-
 import { GLTFLoader } from './libs/GLTFLoader.js';
 
 // 1. Crear escena
@@ -319,8 +318,8 @@ function animate() {
 
         if (distancia < 2.0 && botellaInclinada && liquidoAltura < liquidoAlturaMax) {
           liquidoAltura += 0.01;
-          liquidoMesh.scale.y = liquidoAltura * 8;
-          liquidoMesh.position.y = -0.3 + (liquidoAltura * 0.8);
+          liquidoMesh.scale.y = liquidoAltura * 50;
+          liquidoMesh.position.y = -0.3 //+ (liquidoAltura * 0.8);
         }
       }
     } else {
