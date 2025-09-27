@@ -40,20 +40,13 @@ installModeToggle(handController, state.controls);
 // 4) Animación
 startAnimationLoop();
 
-
-// Variables para los modelos
-let modeloBotella = null;
-let modeloVaso = null;
-let modeloMesa = null;
-let mixer = null;
-
 // Función para obtener la posición del pico de la botella
 function getPicoBotellaPos() {
   if (!modeloBotella) return null;
   // Encuentra el punto más alto en Y de la botella
   let pico = new THREE.Vector3();
-  modeloBotella.updateMatrixWorld();
-  modeloBotella.traverse((child) => {
+  state.modeloBotella.updateMatrixWorld();
+  state.modeloBotella.traverse((child) => {
     if (child.isMesh) {
       child.geometry.computeBoundingBox();
       const box = child.geometry.boundingBox;
@@ -93,7 +86,7 @@ mesaLoader.load(
     
     console.log('Mesa cargada correctamente:', gltf);
     state.scene.add(gltf.scene); // Cambiar scene por state.scene
-    modeloMesa = gltf.scene;
+    state.modeloMesa = gltf.scene;
   },
   undefined,
   function (error) {
@@ -122,9 +115,9 @@ botellaLoader.load(
 
 // Cargar el vaso
 const vasoLoader = new GLTFLoader();
-let liquidoMesh = null;
-let liquidoAltura = 0;
-const liquidoAlturaMax = 1.8;
+//let liquidoMesh = null;
+//let liquidoAltura = 0;
+//const liquidoAlturaMax = 1.8;
 
 vasoLoader.load(
   '../assets/models/vaso/vaso.gltf',
@@ -146,26 +139,30 @@ vasoLoader.load(
     });
 
     // Crear el líquido en el vaso
-    const geometry = new THREE.CylinderGeometry(0.85, 0.85, 0.05, 32);
-    geometry.translate(0, 0.025, 0); // La mitad de la altura (0.05/2)
+    const geometry = new THREE.CylinderGeometry(0.85, 0.85, 18, 32); // Altura inicial ajustada para que sea visible
+    geometry.translate(0, 0.5, 0); // Mover el punto de origen a la base del cilindro
 
     const material = new THREE.MeshPhongMaterial({
-        color: '#7a5230',
-        transparent: false,
+        color: '#7a5230', // Color marrón para el líquido
+        transparent: false, // Cambiar a true si quieres que sea semitransparente
         shininess: 30,
         specular: 0x666666
     });
-    liquidoMesh = new THREE.Mesh(geometry, material);
-    liquidoMesh.position.y = -0.3;
-    gltf.scene.add(liquidoMesh);
+
+    // Crear el mesh del líquido
+    state.liquidoMesh = new THREE.Mesh(geometry, material);
+    state.liquidoMesh.scale.y = 1; // Escalar el líquido para que sea visible desde el inicio
+    state.liquidoMesh.position.y = -20.8; // Ajustar la posición para que esté dentro del vaso
+    state.scene.add(state.liquidoMesh); // Agregar el líquido directamente a la escena
+
+    // Asignar el líquido al estado
+    state.liquidoMesh = state.liquidoMesh;
 
     state.scene.add(gltf.scene); // Cambiar scene por state.scene
-    modeloVaso = gltf.scene;
+    state.modeloVaso = gltf.scene;
   },
   undefined,
   function (error) {
     console.error('Error al cargar el modelo del vaso:', error);
   }
 );
-
-

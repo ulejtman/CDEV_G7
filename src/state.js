@@ -6,7 +6,7 @@ export const state = {
   controls: null,
 
   modeloMesa: null,
-  modeloBotella: null,  // antes modeloGLTF
+  modeloBotella: null,
   modeloVaso: null,
   liquidoMesh: null,
   liquidoAltura: 0,
