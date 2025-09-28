@@ -115,9 +115,6 @@ botellaLoader.load(
 
 // Cargar el vaso
 const vasoLoader = new GLTFLoader();
-//let liquidoMesh = null;
-//let liquidoAltura = 0;
-//const liquidoAlturaMax = 1.8;
 
 vasoLoader.load(
   '../assets/models/vaso/vaso.gltf',
@@ -139,8 +136,8 @@ vasoLoader.load(
     });
 
     // Crear el líquido en el vaso
-    const geometry = new THREE.CylinderGeometry(0.85, 0.85, 18, 32); // Altura inicial ajustada para que sea visible
-    geometry.translate(0, 0.5, 0); // Mover el punto de origen a la base del cilindro
+    const geometry = new THREE.CylinderGeometry(0.42, 0.42, 0.05, 32); // Altura inicial ajustada para que sea visible
+    geometry.translate(0, 0.025, 0); // Mover el punto de origen a la base del cilindro
 
     const material = new THREE.MeshPhongMaterial({
         color: '#7a5230', // Color marrón para el líquido
@@ -151,13 +148,17 @@ vasoLoader.load(
 
     // Crear el mesh del líquido
     state.liquidoMesh = new THREE.Mesh(geometry, material);
-    state.liquidoMesh.scale.y = 1; // Escalar el líquido para que sea visible desde el inicio
-    state.liquidoMesh.position.y = -20.8; // Ajustar la posición para que esté dentro del vaso
+    state.liquidoMesh.position.y = -0.3;
+    state.liquidoMesh.scale.y = 0.01 ; // Escalar el líquido para que sea visible desde el inicio
+
+    // Alinear la posición del líquido con la posición del vaso
+    state.liquidoMesh.position.set(
+        gltf.scene.position.x, // Posición X del vaso
+        gltf.scene.position.y, // Posición Y del vaso
+        gltf.scene.position.z  // Posición Z del vaso
+    );
+
     state.scene.add(state.liquidoMesh); // Agregar el líquido directamente a la escena
-
-    // Asignar el líquido al estado
-    state.liquidoMesh = state.liquidoMesh;
-
     state.scene.add(gltf.scene); // Cambiar scene por state.scene
     state.modeloVaso = gltf.scene;
   },

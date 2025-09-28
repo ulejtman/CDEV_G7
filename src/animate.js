@@ -20,8 +20,8 @@ export function startAnimationLoop() {
           const inclinada = Math.abs(state.modeloBotella.rotation.z) > 0.1;
           if (dist < 2.0 && inclinada && state.liquidoAltura < state.liquidoAlturaMax) {
             state.liquidoAltura += 0.01;
-            state.liquidoMesh.scale.y = state.liquidoAltura * 17;
-            state.liquidoMesh.position.y = 0.3; // nivel
+            state.liquidoMesh.scale.y = state.liquidoAltura * 10;
+            state.liquidoMesh.position.y = state.modeloVaso.position.y; // nivel
           }
         }
       } else {
