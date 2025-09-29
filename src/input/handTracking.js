@@ -1,6 +1,5 @@
 import { state } from '../state.js';
 
-// Encapsula MediaPipe Hands + Camera
 export class HandController {
   constructor() {
     this.video = document.createElement('video');
@@ -20,10 +19,14 @@ export class HandController {
     this.hands.onResults((results) => {
       if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
         const lm = results.multiHandLandmarks[0];
+        const indexTip = lm[8]; // Punta del dedo índice
+        state.pointerX = indexTip.x;
+        state.pointerY = indexTip.y;
+
         const thumbTip = lm[4], pinkyTip = lm[20];
         const dx = thumbTip.x - pinkyTip.x;
         const dy = thumbTip.y - pinkyTip.y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
+        const dist = Math.sqrt(dx * dx + dy * dy);
         state.isFist = dist < 0.20;
 
         const palm = lm[9];
@@ -51,5 +54,5 @@ export class HandController {
   }
 
   start() { this.video.style.display = 'block'; this.cam.start(); }
-  stop()  { this.video.style.display = 'none';  this.cam.stop();  }
+  stop() { this.video.style.display = 'none'; this.cam.stop(); }
 }

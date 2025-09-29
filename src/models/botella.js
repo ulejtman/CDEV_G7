@@ -10,6 +10,13 @@ export function loadBotella() {
       gltf.scene.position.z = -2.8;
       gltf.scene.rotation.y = Math.PI;
       gltf.scene.scale.set(0.5, 0.5, 0.5);
+      gltf.scene.traverse((child) => {
+        if (child.isMesh) {
+          child.material.transparent = false;
+          child.material.opacity = 1.0;
+          child.material.needsUpdate = true;
+        }
+      });
 
       state.scene.add(gltf.scene); // Agregar la botella a la escena
       state.modeloBotella = gltf.scene; // Asignar el modelo de la botella al estado
