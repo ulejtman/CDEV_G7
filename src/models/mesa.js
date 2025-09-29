@@ -4,7 +4,7 @@ import { state } from '../state.js';
 export function loadMesa() {
   const loader = new GLTFLoader();
   return new Promise((resolve, reject) => {
-    loader.load('../assets/models/mesa/scene.gltf', (gltf) => {
+    loader.load('assets/models/mesa/scene.gltf', (gltf) => {
       const s = gltf.scene;
       s.position.set(-38, 10, -2.5); // Posición inicial de la mesa
       s.rotation.y = Math.PI / 2; // Rotar 180 grados en el eje Y

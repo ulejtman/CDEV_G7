@@ -1,4 +1,5 @@
 import { state } from './state.js';
+import { updateCameraRotation } from './core/controls.js';
 
 export function startAnimationLoop() {
   let selectionTimer = null; // Temporizador para la selección
@@ -9,15 +10,38 @@ export function startAnimationLoop() {
     if (state.controls) state.controls.update();
     state.pointerX = Math.min(Math.max(state.pointerX, 0), 1);
        state.pointerY = Math.min(Math.max(state.pointerY, 0), 1);
+    // Manejar la visibilidad de los punteros según el modo
+    if (state.modo === 'servir') {
+      if (state.pointerMesh) state.pointerMesh.visible = true;
+      if (state.redPointerMesh) state.redPointerMesh.visible = false;
+      state.activePointer = 'blue';
+    }
+
     // Actualizar posición del puntero
     if (state.pointerX && state.pointerY) {
-      const pointerPos = new THREE.Vector3(
-        (state.pointerX - 0.5) * state.frustumSize * state.aspect(),
-        -21.3 + ((0.5 - state.pointerY) * state.frustumSize), // Ajustar la altura inicial
-        -2 // Profundidad del puntero
-      );
-      state.pointerMesh.position.copy(pointerPos);
-      console.log(state.selectedModel) 
+      if (state.modo === 'servir' || state.activePointer === 'blue') {
+        // Movimiento del puntero azul (original)
+        const pointerPos = new THREE.Vector3(
+          (state.pointerX - 0.5) * state.frustumSize * state.aspect(),
+          -21.3 + ((0.5 - state.pointerY) * state.frustumSize),
+          -2.8
+        );
+        state.pointerMesh.position.copy(pointerPos);
+        
+        // Verificar la posición del puntero para la rotación de la cámara
+        updateCameraRotation(pointerPos.x, pointerPos.z, state.controls);
+      } else if (state.activePointer === 'red') {
+        // Movimiento del puntero rojo (ejes Z e Y, X fijo)
+        const redPointerPos = new THREE.Vector3(
+          -6.2, // X fijo
+          -18 + ((0.5 - state.pointerY) * state.frustumSize), // Y se mueve con el mouse
+          -9 + ((state.pointerX - 0.5) * state.frustumSize * state.aspect()) // Z se mueve con el mouse
+        );
+        state.redPointerMesh.position.copy(redPointerPos);
+        
+        // Verificar la posición del puntero rojo para la rotación de la cámara
+        updateCameraRotation(redPointerPos.x, redPointerPos.z, state.controls);
+      }
     }
 
     // Raycasting para detectar intersección con modelos

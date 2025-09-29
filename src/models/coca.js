@@ -4,7 +4,7 @@ import { state } from '../state.js';
 export function loadCoca() {
   const loader = new GLTFLoader();
   return new Promise((resolve, reject) => {
-    loader.load('../assets/models/coca/coca.gltf', (gltf) => {
+    loader.load('assets/models/coca/coca.gltf', (gltf) => {
       gltf.scene.position.x = -1;
       gltf.scene.position.y = -21.3; // Sobre la mesa
       gltf.scene.position.z = -2.8;

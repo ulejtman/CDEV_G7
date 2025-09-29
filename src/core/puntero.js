@@ -1,19 +1,24 @@
 import { state } from '../state.js';
 
 export function createPointer() {
-  // Crear la geometría y el material del puntero
-  const pointerGeometry = new THREE.SphereGeometry(0.2, 32, 32); // Esfera pequeña
-  const pointerMaterial = new THREE.MeshBasicMaterial({ color: 'blue' }); // Color azul
+  // Crear la geometría y el material del puntero azul
+  const pointerGeometry = new THREE.SphereGeometry(0.2, 32, 32);
+  const bluePointerMaterial = new THREE.MeshBasicMaterial({ color: 'blue' });
+  const redPointerMaterial = new THREE.MeshBasicMaterial({ color: 'red' });
 
-  // Crear el mesh del puntero
-  const pointerMesh = new THREE.Mesh(pointerGeometry, pointerMaterial);
+  // Crear el mesh del puntero azul
+  const bluePointerMesh = new THREE.Mesh(pointerGeometry, bluePointerMaterial);
+  bluePointerMesh.position.set(0, -21.3, -2.8);
+  state.scene.add(bluePointerMesh);
+  state.pointerMesh = bluePointerMesh;
 
-  // Configurar la posición inicial del puntero (misma altura que la botella y la coca)
-  pointerMesh.position.set(0, -21.3, -2.8); // Ajustar posición inicial (X, Y, Z)
+  // Crear el mesh del puntero rojo (inicialmente invisible)
+  const redPointerMesh = new THREE.Mesh(pointerGeometry, redPointerMaterial);
+  redPointerMesh.position.set(-6.2, -18, -9); // Posición inicial solicitada
+  redPointerMesh.visible = false;
+  state.scene.add(redPointerMesh);
+  state.redPointerMesh = redPointerMesh;
 
-  // Agregar el puntero a la escena
-  state.scene.add(pointerMesh);
-
-  // Guardar el puntero en el estado global
-  state.pointerMesh = pointerMesh;
+  // Agregar estado para controlar qué puntero está activo
+  state.activePointer = 'blue';
 }

@@ -27,7 +27,25 @@ export class HandController {
         const dx = thumbTip.x - pinkyTip.x;
         const dy = thumbTip.y - pinkyTip.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        state.isFist = dist < 0.20;
+        const isFistNow = dist < 0.20;
+        
+        // Manejo del tiempo que se mantiene el puño cerrado
+        if (isFistNow) {
+          if (!state.isFist) { // Si recién se cerró el puño
+            state.tiempoDeteccionPuño = Date.now();
+          } else if (Date.now() - state.tiempoDeteccionPuño >= state.umbralTiempoPuño) {
+            // Si se mantuvo el puño cerrado por suficiente tiempo
+            if (state.modo === 'camara') {
+              state.modo = 'servir';
+              console.log('Cambiando a modo servir');
+            } else {
+              state.modo = 'camara';
+              console.log('Cambiando a modo cámara');
+            }
+            state.tiempoDeteccionPuño = Date.now(); // Reiniciar el tiempo para evitar cambios múltiples
+          }
+        }
+        state.isFist = isFistNow;
 
         const palm = lm[9];
         state.handX = palm.x;
