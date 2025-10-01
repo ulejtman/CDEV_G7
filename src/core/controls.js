@@ -1,14 +1,12 @@
 import { state } from '../state.js';
 
-let isRotating = false;
-let isRotatingBack = false;
 let isZooming = false;
 let currentTarget = new THREE.Vector3(0, -20, -1);
 let targetRotation = new THREE.Vector3(-8, -20, -9);
 let initialTarget = new THREE.Vector3(0, -20, -1);
 
 // Posiciones de cámara para el zoom de la mesa
-const zoomMesaPosition = new THREE.Vector3(0, -19.5, -7.5); // Posición un poco más alejada
+const zoomMesaPosition = new THREE.Vector3(0, -19.5, -6.5); // Posición un poco más alejada
 let originalCameraPosition = null; // Guardará la posición original
 let originalTargetPosition = null; // Guardará el target original
 
@@ -20,6 +18,10 @@ export function createOrbitControls(camera, domElement) {
   controls.maxDistance = 50;
   controls.maxPolarAngle = Math.PI;
   controls.target.set(currentTarget.x, currentTarget.y, currentTarget.z);
+  
+  // Agregar variables de estado de rotación a los controles
+  controls.isRotating = false;
+  controls.isRotatingBack = false;
   
   // Deshabilitar todos los controles del mouse para que la cámara quede fija
   controls.enabled = false;
@@ -79,16 +81,16 @@ export function updateCameraRotation(pointerX, pointerZ, controls) {
   const BACK_ROTATION_THRESHOLD = 1; // Umbral para activar la rotación de vuelta
   
 
-  if (state.activePointer === 'blue' && pointerX <= ROTATION_THRESHOLD && !isRotating && !isRotatingBack) {
-    isRotating = true;
-    isRotatingBack = false;
+  if (state.activePointer === 'blue' && pointerX <= ROTATION_THRESHOLD && !controls.isRotating && !controls.isRotatingBack) {
+    controls.isRotating = true;
+    controls.isRotatingBack = false;
     if (state.pointerMesh) state.pointerMesh.visible = false;
     if (state.redPointerMesh) state.redPointerMesh.visible = false;
     startRotation(controls, targetRotation, 'toRight');
   } 
-  else if (state.activePointer === 'red' && pointerZ >= BACK_ROTATION_THRESHOLD && !isRotating && !isRotatingBack) {
-    isRotatingBack = true;
-    isRotating = false;
+  else if (state.activePointer === 'red' && pointerZ >= BACK_ROTATION_THRESHOLD && !controls.isRotating && !controls.isRotatingBack) {
+    controls.isRotatingBack = true;
+    controls.isRotating = false;
     if (state.redPointerMesh) state.redPointerMesh.visible = false;
     if (state.pointerMesh) state.pointerMesh.visible = false;
     startRotation(controls, initialTarget, 'toLeft');
@@ -101,10 +103,10 @@ function startRotation(controls, targetPos, direction) {
 
   function animate() {
     // Verificar si debemos continuar la animación basado en la dirección
-    if (direction === 'toRight' && !isRotating) {
+    if (direction === 'toRight' && !controls.isRotating) {
       return;
     }
-    if (direction === 'toLeft' && !isRotatingBack) {
+    if (direction === 'toLeft' && !controls.isRotatingBack) {
       return;
     }
 
@@ -117,8 +119,8 @@ function startRotation(controls, targetPos, direction) {
     // Si estamos lo suficientemente cerca del objetivo, detenemos la rotación
     if (Math.abs(dx) < epsilon && Math.abs(dy) < epsilon && Math.abs(dz) < epsilon) {
       if (direction === 'toRight') {
-        isRotating = false;
-        isRotatingBack = false;
+        controls.isRotating = false;
+        controls.isRotatingBack = false;
         // Asegurarnos de que el puntero azul esté oculto
         if (state.pointerMesh) state.pointerMesh.visible = false;
         // Activar el puntero rojo
@@ -127,8 +129,8 @@ function startRotation(controls, targetPos, direction) {
           state.activePointer = 'red';
         }
       } else {
-        isRotatingBack = false;
-        isRotating = false;
+        controls.isRotatingBack = false;
+        controls.isRotating = false;
         // Asegurarnos de que el puntero rojo esté oculto
         if (state.redPointerMesh) state.redPointerMesh.visible = false;
         // Activar el puntero azul

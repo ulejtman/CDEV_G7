@@ -17,11 +17,12 @@ export function startAnimationLoop() {
     if (state.modoDeteccionManos) {
       updateBottleWithHands(state.handX, state.handY, state.isFist, state.handAngle);
     }
-    // Manejar la visibilidad de los punteros según el modo
-    if (state.modo === 'servir') {
-      if (state.pointerMesh) state.pointerMesh.visible = true;
-      if (state.redPointerMesh) state.redPointerMesh.visible = false;
-      state.activePointer = 'blue';
+
+    // Establecer el puntero activo basado en la rotación de la cámara (si no está rotando)
+    if (state.controls && !state.controls.isRotating && !state.controls.isRotatingBack) {
+      const isRotated = Math.abs(state.controls.target.x - (-8)) < 0.5 && 
+                       Math.abs(state.controls.target.z - (-9)) < 0.5;
+      state.activePointer = isRotated ? 'red' : 'blue';
     }
 
     // Actualizar posición del puntero
@@ -33,15 +34,19 @@ export function startAnimationLoop() {
         -2.8
       );
 
-      if ((state.modo === 'servir' || state.activePointer === 'blue') && state.pointerMesh) {
+      if (state.activePointer === 'blue' && state.pointerMesh) {
         // Movimiento del puntero azul (original)
         state.pointerMesh.position.copy(pointerPos);
+        if (!state.controls.isRotating && !state.controls.isRotatingBack) {
+          state.pointerMesh.visible = true;
+          if (state.redPointerMesh) state.redPointerMesh.visible = false;
+        }
         
         // Verificar la posición del puntero para la rotación de la cámara
         updateCameraRotation(pointerPos.x, pointerPos.z, state.controls);
         // Verificar si el puntero está sobre la botella
         checkPointerOverBottle(pointerPos);
-      } else if (state.activePointer === 'red') {
+      } else if (state.activePointer === 'red' && state.redPointerMesh) {
         // Movimiento del puntero rojo (ejes Z e Y, X fijo)
         const redPointerPos = new THREE.Vector3(
           -6.2, // X fijo
@@ -49,6 +54,10 @@ export function startAnimationLoop() {
           -9 + ((state.pointerX - 0.5) * state.frustumSize * state.aspect()) // Z se mueve con el mouse
         );
         state.redPointerMesh.position.copy(redPointerPos);
+        if (!state.controls.isRotating && !state.controls.isRotatingBack) {
+          state.redPointerMesh.visible = true;
+          if (state.pointerMesh) state.pointerMesh.visible = false;
+        }
         
         // Verificar la posición del puntero rojo para la rotación de la cámara
         updateCameraRotation(redPointerPos.x, redPointerPos.z, state.controls);
