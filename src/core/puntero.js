@@ -22,3 +22,18 @@ export function createPointer() {
   // Agregar estado para controlar qué puntero está activo
   state.activePointer = 'blue';
 }
+/* checkear
+export function updatePointerState() {
+  if (state.redPointerMesh && state.pointerMesh) {
+    if (state.redPointerMesh.visible && state.activePointer === 'blue') {
+      state.activePointer = 'blue';
+      console.log('El puntero ahora es blue');
+    } else if (!state.redPointerMesh.visible && state.activePointer === 'red') {
+      state.activePointer = 'red';
+      console.log('El puntero ahora es red');
+    }
+  } else {
+    console.warn('Los punteros no están inicializados correctamente.');
+  }
+}
+  */

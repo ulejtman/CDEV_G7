@@ -2,14 +2,19 @@ import { state } from './state.js';
 import { updateCameraRotation } from './core/controls.js';
 import { updateBottleWithHands } from './input/modeToggle.js';
 import { checkPointerOverBottle } from './input/modeToggle.js';
+import { updateRotationDirection } from './core/controls.js';
+import { playAudioOnRightRotation } from './audio.js';
 
-export function startAnimationLoop() {
+export function startAnimationLoop(onUpdate) {
   let selectionTimer = null; // Temporizador para la selección
   let selectedModel = null; // Modelo actualmente seleccionado
 
   function animate() {
     requestAnimationFrame(animate);
-    if (state.controls) state.controls.update();
+    if (state.controls) {
+      state.controls.update();
+      updateRotationDirection(state.controls); // Actualizar dirección de rotación
+    }
     state.pointerX = Math.min(Math.max(state.pointerX, 0), 1);
     state.pointerY = Math.min(Math.max(state.pointerY, 0), 1);
 
@@ -111,6 +116,13 @@ export function startAnimationLoop() {
         }
       }
     }
+
+
+    // Llamar a la función de reproducción de audio
+    playAudioOnRightRotation();
+
+    // Llamar a la función de actualización personalizada
+    if (onUpdate) onUpdate();
 
     state.renderer.render(state.scene, state.camera);
   }

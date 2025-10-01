@@ -20,6 +20,8 @@ import { startAnimationLoop } from './animate.js';
 
 // Estado
 import { state } from './state.js';
+import { setupAudio, playAudioOnRightRotation } from './audio.js';
+import { loadParrilla } from './models/parrilla.js';
 
 
 
@@ -37,6 +39,11 @@ createPointer(state.scene);
 
 // Inicializar controlador de manos
 state.handController = new HandController();
+
+// Configurar el audio
+const listener = new THREE.AudioListener();
+state.camera.add(listener); // Agregar el listener a la cámara
+setupAudio(listener);
 
 // 2) Cargar modelos (en paralelo) ( TODAVIA NO ESTA HECHO)
 // Cargar la mesa
@@ -67,6 +74,12 @@ loadCoca().then((coca) => {
   console.error('Error al cargar la coca:', error);
 });
 
+//Cargar la parrilla
+loadParrilla().then((parrilla) => {
+  console.log('Parrilla cargada correctamente:', parrilla);
+}).catch((error) => {
+  console.error('Error al cargar la parrilla:', error);
+});
 
 
 // 3) Manos + toggle de modo (barra espaciadora)
@@ -74,5 +87,7 @@ const handController = new HandController();
 installModeToggle(handController, state.controls);
 
 // 4) Animación
-startAnimationLoop();
+startAnimationLoop(() => {
+  playAudioOnRightRotation(); // Verificar y reproducir sonidos en cada cuadro
+});
 

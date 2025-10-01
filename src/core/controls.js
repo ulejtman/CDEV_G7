@@ -156,3 +156,14 @@ function startRotation(controls, targetPos, direction) {
 
   animate();
 }
+
+export function updateRotationDirection(controls) {
+  const rotationDelta = controls.getAzimuthalAngle(); // Obtener el ángulo de rotación
+  if (rotationDelta > 0) {
+    controls.rotationDirection = 'right'; // Rotación hacia la derecha
+  } else if (rotationDelta < 0) {
+    controls.rotationDirection = 'left'; // Rotación hacia la izquierda
+  } else {
+    controls.rotationDirection = null; // Sin rotación
+  }
+}
