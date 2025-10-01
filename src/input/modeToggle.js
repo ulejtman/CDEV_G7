@@ -7,7 +7,7 @@ const aspect = window.innerWidth / window.innerHeight;
 
 let punteroDesactivado = false;
 
-export function checkPointerOverBottle(pointerPosition) {
+export async function checkPointerOverBottle(pointerPosition) {
   if (!state.pointerMesh || !state.modeloBotella) return;
 
   const pointerPos = new THREE.Vector3(pointerPosition.x, pointerPosition.y, pointerPosition.z);
@@ -47,7 +47,19 @@ function desactivarPuntero() {
   punteroDesactivado = true;
 }
 
-function activarModoManos() {
+async function activarModoManos() {
+  console.log('Iniciando secuencia de activación...');
+  
+  // Activar el zoom primero
+  if (state.camera && state.controls) {
+    const { activateZoomMesa } = await import('../core/controls.js');
+    activateZoomMesa(state.camera, state.controls);
+    
+    // Esperar a que termine la animación del zoom (1 segundo)
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
+  // Activar modo manos
   console.log('Activando modo manos...');
   state.modoDeteccionManos = true;
   modoManosActivado = true;

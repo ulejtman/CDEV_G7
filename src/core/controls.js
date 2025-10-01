@@ -2,9 +2,15 @@ import { state } from '../state.js';
 
 let isRotating = false;
 let isRotatingBack = false;
+let isZooming = false;
 let currentTarget = new THREE.Vector3(0, -20, -1);
 let targetRotation = new THREE.Vector3(-8, -20, -9);
 let initialTarget = new THREE.Vector3(0, -20, -1);
+
+// Posiciones de cámara para el zoom de la mesa
+const zoomMesaPosition = new THREE.Vector3(0, -19.5, -7.5); // Posición un poco más alejada
+let originalCameraPosition = null; // Guardará la posición original
+let originalTargetPosition = null; // Guardará el target original
 
 export function createOrbitControls(camera, domElement) {
   const controls = new THREE.OrbitControls(camera, domElement);
@@ -22,6 +28,50 @@ export function createOrbitControls(camera, domElement) {
   controls.enableZoom = false;
   
   return controls;
+}
+
+export function activateZoomMesa(camera, controls) {
+  if (isZooming) return;
+  isZooming = true;
+
+  // Guardar posición actual
+  originalCameraPosition = camera.position.clone();
+  originalTargetPosition = controls.target.clone();
+
+  // Animación suave hacia la posición de zoom
+  animateCamera(camera, controls, zoomMesaPosition, new THREE.Vector3(0, -21.3, 2), 1000);
+}
+
+export function deactivateZoomMesa(camera, controls) {
+  if (!isZooming || !originalCameraPosition) return;
+
+  // Animación suave de vuelta a la posición original
+  animateCamera(camera, controls, originalCameraPosition, originalTargetPosition, 1000);
+  isZooming = false;
+}
+
+function animateCamera(camera, controls, targetPosition, targetLookAt, duration) {
+  const startPosition = camera.position.clone();
+  const startTarget = controls.target.clone();
+  const startTime = Date.now();
+
+  function update() {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Función de easing para suavizar el movimiento
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+    // Interpolar posición de la cámara
+    camera.position.lerpVectors(startPosition, targetPosition, easeProgress);
+    controls.target.lerpVectors(startTarget, targetLookAt, easeProgress);
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+
+  update();
 }
 
 export function updateCameraRotation(pointerX, pointerZ, controls) {
