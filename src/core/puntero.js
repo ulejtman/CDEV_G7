@@ -8,7 +8,7 @@ export function createPointer() {
 
   // Crear el mesh del puntero azul
   const bluePointerMesh = new THREE.Mesh(pointerGeometry, bluePointerMaterial);
-  bluePointerMesh.position.set(0, -21.3, -2.8);
+  bluePointerMesh.position.set(0, -18, -2.8);
   state.scene.add(bluePointerMesh);
   state.pointerMesh = bluePointerMesh;
 

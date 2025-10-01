@@ -1,5 +1,7 @@
 import { state } from './state.js';
 import { updateCameraRotation } from './core/controls.js';
+import { updateBottleWithHands } from './input/modeToggle.js';
+import { checkPointerOverBottle } from './input/modeToggle.js';
 
 export function startAnimationLoop() {
   let selectionTimer = null; // Temporizador para la selección
@@ -9,7 +11,12 @@ export function startAnimationLoop() {
     requestAnimationFrame(animate);
     if (state.controls) state.controls.update();
     state.pointerX = Math.min(Math.max(state.pointerX, 0), 1);
-       state.pointerY = Math.min(Math.max(state.pointerY, 0), 1);
+    state.pointerY = Math.min(Math.max(state.pointerY, 0), 1);
+
+    // Actualizar la botella con el tracking de manos
+    if (state.modoDeteccionManos) {
+      updateBottleWithHands(state.handX, state.handY, state.isFist, state.handAngle);
+    }
     // Manejar la visibilidad de los punteros según el modo
     if (state.modo === 'servir') {
       if (state.pointerMesh) state.pointerMesh.visible = true;
@@ -19,17 +26,21 @@ export function startAnimationLoop() {
 
     // Actualizar posición del puntero
     if (state.pointerX && state.pointerY) {
-      if (state.modo === 'servir' || state.activePointer === 'blue') {
+      // Calcular la posición del puntero independientemente de si existe o no
+      const pointerPos = new THREE.Vector3(
+        (state.pointerX - 0.5) * state.frustumSize * state.aspect(),
+        -21.3 + ((0.5 - state.pointerY) * state.frustumSize),
+        -2.8
+      );
+
+      if ((state.modo === 'servir' || state.activePointer === 'blue') && state.pointerMesh) {
         // Movimiento del puntero azul (original)
-        const pointerPos = new THREE.Vector3(
-          (state.pointerX - 0.5) * state.frustumSize * state.aspect(),
-          -21.3 + ((0.5 - state.pointerY) * state.frustumSize),
-          -2.8
-        );
         state.pointerMesh.position.copy(pointerPos);
         
         // Verificar la posición del puntero para la rotación de la cámara
         updateCameraRotation(pointerPos.x, pointerPos.z, state.controls);
+        // Verificar si el puntero está sobre la botella
+        checkPointerOverBottle(pointerPos);
       } else if (state.activePointer === 'red') {
         // Movimiento del puntero rojo (ejes Z e Y, X fijo)
         const redPointerPos = new THREE.Vector3(

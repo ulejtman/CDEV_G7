@@ -4,12 +4,12 @@ import { state } from '../state.js';
 export function loadBotella() {
   const loader = new GLTFLoader();
   return new Promise((resolve, reject) => {
-    loader.load('assets/models/botella/botella.gltf', (gltf) => {
-      gltf.scene.position.x = 0;
+    loader.load('assets/models/fernet/scene.gltf', (gltf) => {
+      gltf.scene.position.x = -0.3;
       gltf.scene.position.y = -21.3; // Sobre la mesa
-      gltf.scene.position.z = -2.8;
+      gltf.scene.position.z = -2.6;
       gltf.scene.rotation.y = Math.PI;
-      gltf.scene.scale.set(0.5, 0.5, 0.5);
+      gltf.scene.scale.set(20, 20, 20);
       gltf.scene.traverse((child) => {
         if (child.isMesh) {
           child.material.transparent = false;

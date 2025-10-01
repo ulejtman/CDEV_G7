@@ -28,23 +28,7 @@ export class HandController {
         const dy = thumbTip.y - pinkyTip.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         const isFistNow = dist < 0.20;
-        
-        // Manejo del tiempo que se mantiene el puño cerrado
-        if (isFistNow) {
-          if (!state.isFist) { // Si recién se cerró el puño
-            state.tiempoDeteccionPuño = Date.now();
-          } else if (Date.now() - state.tiempoDeteccionPuño >= state.umbralTiempoPuño) {
-            // Si se mantuvo el puño cerrado por suficiente tiempo
-            if (state.modo === 'camara') {
-              state.modo = 'servir';
-              console.log('Cambiando a modo servir');
-            } else {
-              state.modo = 'camara';
-              console.log('Cambiando a modo cámara');
-            }
-            state.tiempoDeteccionPuño = Date.now(); // Reiniciar el tiempo para evitar cambios múltiples
-          }
-        }
+
         state.isFist = isFistNow;
 
         const palm = lm[9];
@@ -71,6 +55,29 @@ export class HandController {
     });
   }
 
-  start() { this.video.style.display = 'block'; this.cam.start(); }
-  stop() { this.video.style.display = 'none'; this.cam.stop(); }
+  async start() {
+    try {
+      console.log('Iniciando detección de manos...');
+      this.video.style.display = 'block';
+      await this.hands.initialize();
+      console.log('MediaPipe Hands inicializado');
+      await this.cam.start();
+      console.log('Cámara iniciada');
+      state.modoDeteccionManos = true;
+    } catch (error) {
+      console.error('Error al iniciar la detección de manos:', error);
+    }
+  }
+
+  async stop() {
+    try {
+      console.log('Deteniendo detección de manos...');
+      this.video.style.display = 'none';
+      await this.cam.stop();
+      state.modoDeteccionManos = false;
+      console.log('Detección de manos detenida');
+    } catch (error) {
+      console.error('Error al detener la detección de manos:', error);
+    }
+  }
 }

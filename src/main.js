@@ -35,6 +35,9 @@ state.camera = createCamera();
 state.controls = createOrbitControls(state.camera, state.renderer.domElement);
 createPointer(state.scene);
 
+// Inicializar controlador de manos
+state.handController = new HandController();
+
 // 2) Cargar modelos (en paralelo) ( TODAVIA NO ESTA HECHO)
 // Cargar la mesa
 loadMesa().then((mesa) => {
