@@ -5,9 +5,9 @@ export function loadCoca() {
   const loader = new GLTFLoader();
   return new Promise((resolve, reject) => {
     loader.load('assets/models/coca/coca.gltf', (gltf) => {
-      gltf.scene.position.x = -3;
+      gltf.scene.position.x = -2;
       gltf.scene.position.y = -21.3; // Sobre la mesa
-      gltf.scene.position.z = -2;
+      gltf.scene.position.z = -2.7;
       gltf.scene.rotation.y = Math.PI;
       gltf.scene.scale.set(7, 8, 7);
       gltf.scene.traverse((child) => {

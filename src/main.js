@@ -12,6 +12,7 @@ import { loadMesa } from './models/mesa.js';
 import { loadVaso } from './models/vaso.js';
 import { loadBotella } from './models/botella.js';
 import { loadCoca } from './models/coca.js'
+import { loadTablaQueso } from './models/tablaQueso.js';
 
 // Input + Loop
 import { HandController } from './input/handTracking.js';
@@ -81,6 +82,12 @@ loadParrilla().then((parrilla) => {
   console.error('Error al cargar la parrilla:', error);
 });
 
+// Cargar la tabla de queso
+loadTablaQueso().then((tablaQueso) => {
+  console.log('Tabla de queso cargada correctamente:', tablaQueso);
+}).catch((error) => {
+  console.error('Error al cargar la tabla de queso:', error);
+});
 
 // 3) Manos + toggle de modo (barra espaciadora)
 const handController = new HandController();
