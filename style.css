@@ -1,3 +1,245 @@
-/* style.css - Estilo básico */ 
-body { margin: 0; overflow: hidden; } 
-canvas { display: block; } 
+/* style.css - Estilo temático argentino */ 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body { 
+    margin: 0; 
+    overflow: hidden; 
+    font-family: 'Lora', serif;
+    background: #000;
+} 
+
+canvas { 
+    display: block; 
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* === PANTALLA DE INICIO === */
+.start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, 
+        rgba(25, 35, 15, 0.95) 0%,
+        rgba(45, 65, 25, 0.9) 25%,
+        rgba(85, 110, 45, 0.85) 50%,
+        rgba(140, 165, 75, 0.8) 75%,
+        rgba(200, 215, 120, 0.75) 100%
+    ), url('assets/textures/campo-verde.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, 
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.6) 70%,
+        rgba(0, 0, 0, 0.8) 100%
+    );
+    z-index: -1;
+}
+
+.start-content {
+    text-align: center;
+    color: #f8f5e8;
+    max-width: 800px;
+    padding: 40px;
+    background: rgba(20, 30, 10, 0.7);
+    border-radius: 20px;
+    border: 2px solid rgba(200, 180, 100, 0.3);
+    box-shadow: 0 0 50px rgba(200, 180, 100, 0.2);
+    backdrop-filter: blur(5px);
+    animation: slideUp 1.5s ease-out 0.5s both;
+}
+
+.title {
+    font-family: 'Cinzel', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: #f4e4a0;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    animation: glow 3s ease-in-out infinite alternate;
+}
+
+.subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: #d4c480;
+    margin-bottom: 30px;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+.description {
+    text-align: justify;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    color: #e8e0c8;
+}
+
+.description p {
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.description strong {
+    color: #f4e4a0;
+    font-weight: 600;
+}
+
+.play-button {
+    background: linear-gradient(135deg, 
+        rgba(180, 140, 60, 0.9) 0%,
+        rgba(200, 160, 80, 1) 50%,
+        rgba(220, 180, 100, 0.9) 100%
+    );
+    border: 3px solid #f4e4a0;
+    color: #2a1810;
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 20px 40px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(200, 160, 80, 0.4);
+}
+
+.play-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(200, 160, 80, 0.6);
+    background: linear-gradient(135deg, 
+        rgba(200, 160, 80, 1) 0%,
+        rgba(220, 180, 100, 1) 50%,
+        rgba(240, 200, 120, 1) 100%
+    );
+}
+
+.play-button:active {
+    transform: translateY(-1px);
+}
+
+.button-text {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.button-subtitle {
+    font-size: 0.8rem;
+    font-weight: 400;
+    opacity: 0.8;
+    font-style: italic;
+}
+
+.controls-hint {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #b8b090;
+    font-style: italic;
+}
+
+/* === CANVAS DEL JUEGO === */
+.game-canvas {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(20, 30, 10, 0.8);
+    color: #f4e4a0;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Lora', serif;
+    font-weight: 500;
+    border: 2px solid rgba(200, 180, 100, 0.5);
+    transition: all 0.3s ease;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+}
+
+.back-button:hover {
+    background: rgba(30, 40, 20, 0.9);
+    border-color: #f4e4a0;
+    transform: translateX(-5px);
+}
+
+/* === ANIMACIONES === */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    from { 
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                     0 0 20px rgba(244, 228, 160, 0.3);
+    }
+    to { 
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                     0 0 30px rgba(244, 228, 160, 0.6),
+                     0 0 40px rgba(244, 228, 160, 0.3);
+    }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+    
+    .start-content {
+        max-width: 90%;
+        padding: 30px 20px;
+    }
+    
+    .description {
+        font-size: 1rem;
+    }
+    
+    .play-button {
+        font-size: 1.1rem;
+        padding: 18px 35px;
+    }
+} 

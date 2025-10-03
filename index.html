@@ -1,12 +1,46 @@
 <!DOCTYPE html> 
-<html lang="en"> 
+<html lang="es"> 
 <head> 
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-    <title>Three.js Project</title> 
+    <title>El Ritual del Campo - Experiencia Argentina</title> 
     <link rel="stylesheet" href="style.css" /> 
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
 </head> 
-<body>     
+<body>
+    <!-- Pantalla de Inicio -->
+    <div id="startScreen" class="start-screen">
+        <div class="background-overlay"></div>
+        <div class="start-content">
+            <h1 class="title">El Ritual del Campo</h1>
+            <div class="subtitle">Una Experiencia Argentina</div>
+            
+            <div class="description">
+                <p>En los vastos campos dorados de la Argentina eterna, donde el viento susurra historias de generaciones pasadas y el sol baña con su luz dorada la inmensidad de la pampa, te invitamos a vivir uno de los rituales más sagrados de nuestra tierra.</p>
+                
+                <p>Aquí, bajo el cielo infinito y rodeado de la naturaleza en su máxima expresión, descubrirás la mesa que ha sido testigo de encuentros inolvidables. Una botella de fernet, guardián de tradiciones, y un vaso con gaseosa, compañero inseparable, te esperan para compartir el momento que une corazones y forja amistades eternas.</p>
+                
+                <p>Este no es solo un juego, es un homenaje a la cultura argentina, a esos momentos únicos donde el tiempo se detiene y las almas se conectan alrededor de una mesa, bajo las estrellas del sur.</p>
+                
+                <p><strong>Prepárate para sumergirte en la experiencia más auténtica del campo argentino.</strong></p>
+            </div>
+            
+            <button id="playButton" class="play-button">
+                <span class="button-text">COMENZAR LA EXPERIENCIA</span>
+                <span class="button-subtitle">Entrar al Campo</span>
+            </button>
+            
+            <div class="controls-hint">
+                <p>Usa el mouse para explorar • Presiona ESPACIO para alternar controles</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas del juego (inicialmente oculto) -->
+    <div id="gameCanvas" class="game-canvas hidden">
+        <div id="backToMenuButton" class="back-button">← Volver al Menú</div>
+    </div>
+     
     <script src="libs/three.min.js"></script> 
     <script src="libs/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
