@@ -3,7 +3,6 @@ import { updateCameraRotation } from './core/controls.js';
 import { updateBottleWithHands } from './input/modeToggle.js';
 import { checkPointerOverBottle } from './input/modeToggle.js';
 import { updateRotationDirection } from './core/controls.js';
-import { playAudioOnRightRotation } from './audio.js';
 
 export function startAnimationLoop(onUpdate) {
   let selectionTimer = null; // Temporizador para la selección
@@ -112,14 +111,10 @@ export function startAnimationLoop(onUpdate) {
         if (dist < 2.0 && inclinada && state.liquidoAltura < state.liquidoAlturaMax) {
           state.liquidoAltura += 0.01;
           state.liquidoMesh.scale.y = state.liquidoAltura * 10;
-          state.liquidoMesh.position.y = state.modeloVaso.position.y; // nivel
+          state.liquidoMesh.position.y = state.modeloVaso.position.y;
         }
       }
     }
-
-
-    // Llamar a la función de reproducción de audio
-    playAudioOnRightRotation();
 
     // Llamar a la función de actualización personalizada
     if (onUpdate) onUpdate();

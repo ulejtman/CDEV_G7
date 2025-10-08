@@ -7,12 +7,13 @@ import { createCamera } from './core/camera.js';
 import { createOrbitControls } from './core/controls.js';
 import { createPointer } from './core/puntero.js';
 
-// Models (Todavia no estan cargados)
+// Models
 import { loadMesa } from './models/mesa.js';
 import { loadVaso } from './models/vaso.js';
 import { loadBotella } from './models/botella.js';
 import { loadCoca } from './models/coca.js'
 import { loadTablaQueso } from './models/tablaQueso.js';
+import { loadParrilla } from './models/parrilla.js';
 
 // Input + Loop
 import { HandController } from './input/handTracking.js';
@@ -21,8 +22,7 @@ import { startAnimationLoop } from './animate.js';
 
 // Estado
 import { state } from './state.js';
-import { setupAudio, playAudioOnRightRotation } from './audio.js';
-import { loadParrilla } from './models/parrilla.js';
+import { setupAudio, startAmbientAudio, stopAmbientAudio } from './audio.js';
 
 // === GESTIÓN DE PANTALLAS ===
 let gameInitialized = false;
@@ -30,6 +30,9 @@ let gameInitialized = false;
 function showStartScreen() {
     document.getElementById('startScreen').classList.remove('hidden');
     document.getElementById('gameCanvas').classList.add('hidden');
+    
+    // Detener el audio cuando volvemos al menú
+    stopAmbientAudio();
 }
 
 function showGameScreen() {
@@ -38,24 +41,41 @@ function showGameScreen() {
     
     // Inicializar el juego solo la primera vez
     if (!gameInitialized) {
-        initializeGame();
-        gameInitialized = true;
+        initializeGame().then(() => {
+            // Iniciar el audio solo después de que todo esté inicializado
+            const audioContext = THREE.AudioContext.getContext();
+            if (audioContext) {
+                audioContext.resume().then(() => {
+                    console.log('Contexto de audio reanudado');
+                    startAmbientAudio();
+                });
+            }
+            gameInitialized = true;
+        });
+    } else {
+        startAmbientAudio();
     }
 }
 
-function initializeGame() {
+async function initializeGame() {
     console.log('🎮 Iniciando la experiencia del campo argentino...');
 
+    // 1) Configurar el audio primero y esperar a que se cargue
+    const listener = new THREE.AudioListener();
+    try {
+        await setupAudio(listener);
+        console.log('Audio configurado correctamente');
+    } catch (error) {
+        console.error('Error al configurar el audio:', error);
+    }
 
-
-    //Desde aca para abajo se deberia empezar a crear las funciones importadas de sus respectivos archivos//
-
-    // 1) Inicializar núcleo
+    // 2) Inicializar núcleo
     state.scene = createScene(); 
+    state.camera = createCamera();
+    state.camera.add(listener); // Agregar el listener a la cámara
     addLights(state.scene);
     createSkybox(state.scene);
     state.renderer = createRenderer();
-    state.camera = createCamera();
     state.controls = createOrbitControls(state.camera, state.renderer.domElement);
     createPointer(state.scene);
 
@@ -65,13 +85,9 @@ function initializeGame() {
     // Inicializar controlador de manos
     state.handController = new HandController();
 
-    // Configurar el audio
-    const listener = new THREE.AudioListener();
-    state.camera.add(listener); // Agregar el listener a la cámara
-    setupAudio(listener);
-
-    // 2) Cargar modelos (en paralelo) ( TODAVIA NO ESTA HECHO)
-    // Cargar la mesa
+    // 2) Cargar modelos
+    
+    //Cargar la mesa
     loadMesa().then((mesa) => {
       console.log('Mesa cargada correctamente:', mesa);
     }).catch((error) => {
@@ -113,14 +129,12 @@ function initializeGame() {
       console.error('Error al cargar la tabla de queso:', error);
     });
 
-    // 3) Manos + toggle de modo (barra espaciadora)
+    // 3) Manos + toggle de modo
     const handController = new HandController();
     installModeToggle(handController, state.controls);
 
-    // 4) Animación
-    startAnimationLoop(() => {
-      playAudioOnRightRotation(); // Verificar y reproducir sonidos en cada cuadro
-    });
+    // 4) Animación (sin audio)
+    startAnimationLoop();
 }
 
 // === CONFIGURACIÓN DE EVENTOS ===
@@ -131,9 +145,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener para el botón de jugar
     const playButton = document.getElementById('playButton');
     if (playButton) {
-        playButton.addEventListener('click', function() {
+        playButton.addEventListener('click', async function() {
             console.log('🌾 ¡Bienvenido al campo argentino!');
-            showGameScreen();
+            
+            try {
+                // Asegurarse de que el contexto de audio esté activado
+                const audioContext = THREE.AudioContext.getContext();
+                if (audioContext && audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+                showGameScreen();
+            } catch (error) {
+                console.error('Error al iniciar el audio:', error);
+            }
         });
     }
     

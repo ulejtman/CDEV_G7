@@ -1,28 +1,41 @@
 import { state } from './state.js';
 
 export function setupAudio(listener) {
-  const audioLoader = new THREE.AudioLoader();
-  const sonidos = [];
+    return new Promise((resolve, reject) => {
+        const audioLoader = new THREE.AudioLoader();
+        const sonidos = [];
+        let soundsLoaded = 0;
+        const totalSounds = 2;
 
-  // Cargar los sonidos
-  const rutasSonidos = [
-    'assets/sounds/Canto del Zorzal.mp3',
-    'assets/sounds/fuego leña.mp3',
-  ];
+        const rutasSonidos = [
+            'assets/sounds/Canto del Zorzal.mp3',
+            'assets/sounds/fuego leña.mp3',
+        ];
 
-  rutasSonidos.forEach((ruta, index) => {
-    const audio = new THREE.PositionalAudio(listener);
-    audioLoader.load(ruta, (buffer) => {
-      console.log(`Audio cargado: ${ruta}`);
-      audio.setBuffer(buffer);
-      audio.setLoop(true); // Configurar el sonido para que se reproduzca en bucle
-      audio.setVolume(5.0); // Ajustar el volumen a un nivel más alto
+        rutasSonidos.forEach((ruta, index) => {
+            const audio = new THREE.PositionalAudio(listener);
+            audioLoader.load(ruta, 
+                (buffer) => {
+                    console.log(`Audio cargado: ${ruta}`);
+                    audio.setBuffer(buffer);
+                    audio.setLoop(true);
+                    audio.setVolume(5.0);
+                    sonidos[index] = audio;
+                    soundsLoaded++;
+
+                    if (soundsLoaded === totalSounds) {
+                        state.sonidos = sonidos;
+                        resolve(sonidos);
+                    }
+                },
+                undefined,
+                (error) => {
+                    console.error('Error cargando audio:', error);
+                    reject(error);
+                }
+            );
+        });
     });
-    sonidos.push(audio);
-  });
-
-  // Guardar los sonidos en el estado global
-  state.sonidos = sonidos;
 }
 
 export function playAudioOnRightRotation() {
@@ -43,6 +56,31 @@ export function playAudioOnRightRotation() {
     state.sonidos.forEach((audio) => {
       if (audio.isPlaying) {
         console.log('Deteniendo sonido por rotación hacia la izquierda:', audio);
+        audio.stop();
+      }
+    });
+  }
+}
+
+export function startAmbientAudio() {
+    if (state.sonidos && state.sonidos.length > 0) {
+        state.sonidos.forEach(audio => {
+            if (audio && !audio.isPlaying) {
+                console.log('Iniciando audio ambiental');
+                audio.play();
+            }
+        });
+    } else {
+        console.warn('No hay sonidos disponibles para reproducir');
+    }
+}
+
+export function stopAmbientAudio() {
+  // Detener todos los sonidos ambientales
+  if (state.sonidos && state.sonidos.length > 0) {
+    state.sonidos.forEach((audio) => {
+      if (audio.isPlaying) {
+        console.log('Deteniendo audio ambiental:', audio);
         audio.stop();
       }
     });
