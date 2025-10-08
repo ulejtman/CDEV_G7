@@ -1,5 +1,50 @@
 import { state } from './state.js';
 
+let payadaSound = null;
+
+export function setupInitialAudio(listener) {
+    return new Promise((resolve, reject) => {
+        const audioLoader = new THREE.AudioLoader();
+        const audio = new THREE.Audio(listener);
+        
+        audioLoader.load('assets/sounds/sonido_payada.MP3',
+            (buffer) => {
+                console.log('Payada cargada correctamente');
+                audio.setBuffer(buffer);
+                audio.setLoop(false); // Cambiar a false para reproducir una sola vez
+                audio.setVolume(5.0);
+                payadaSound = audio;
+                resolve(audio);
+            },
+            (progress) => {
+                console.log('Progreso de carga de payada:', (progress.loaded / progress.total * 100) + '%');
+            },
+            (error) => {
+                console.error('Error cargando la payada:', error);
+                reject(error);
+            }
+        );
+    });
+}
+
+export function playPayada() {
+    if (payadaSound && !payadaSound.isPlaying) {
+        console.log('Reproduciendo payada automáticamente');
+        try {
+            payadaSound.play();
+        } catch (error) {
+            console.error('Error al reproducir la payada:', error);
+        }
+    }
+}
+
+export function stopPayada() {
+    if (payadaSound && payadaSound.isPlaying) {
+        console.log('Deteniendo payada');
+        payadaSound.stop();
+    }
+}
+
 export function setupAudio(listener) {
     return new Promise((resolve, reject) => {
         const audioLoader = new THREE.AudioLoader();

@@ -61,8 +61,12 @@ canvas {
 .start-content {
     text-align: center;
     color: #f8f5e8;
-    max-width: 800px;
-    padding: 40px;
+    width: 90%; /* Reducido de 90% a 60% */
+    max-width: 600px; /* Agregado max-width más pequeño */
+    min-width: 320px; /* Agregado min-width para evitar que sea demasiado estrecho en móviles */
+    max-height: 90vh;
+    padding: 20px 30px; /* Ajustado padding horizontal */
+    margin: 0 auto;
     background: rgba(20, 30, 10, 0.7);
     border-radius: 20px;
     border: 2px solid rgba(200, 180, 100, 0.3);
@@ -71,9 +75,17 @@ canvas {
     animation: slideUp 1.5s ease-out 0.5s both;
 }
 
+/* Asegurar responsividad en pantallas pequeñas */
+@media (max-width: 768px) {
+    .start-content {
+        width: 85%;
+        padding: 15px 20px;
+    }
+}
+
 .title {
     font-family: 'Cinzel', serif;
-    font-size: 4rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: #f4e4a0;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
@@ -92,16 +104,18 @@ canvas {
 }
 
 .description {
-    text-align: justify;
-    line-height: 1.8;
-    font-size: 1.1rem;
-    margin-bottom: 40px;
-    color: #e8e0c8;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-height: calc(90vh - 200px); /* Altura máxima considerando otros elementos */
+    overflow-y: auto; /* Permitir scroll si el contenido es muy largo */
 }
 
 .description p {
-    margin-bottom: 20px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    margin: 15px 0; /* Aumentar el margen entre párrafos */
 }
 
 .description strong {
@@ -235,11 +249,11 @@ canvas {
     }
     
     .description {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     
     .play-button {
         font-size: 1.1rem;
         padding: 18px 35px;
     }
-} 
+}

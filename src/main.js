@@ -22,17 +22,75 @@ import { startAnimationLoop } from './animate.js';
 
 // Estado
 import { state } from './state.js';
-import { setupAudio, startAmbientAudio, stopAmbientAudio } from './audio.js';
+import { setupAudio, startAmbientAudio, stopAmbientAudio, setupInitialAudio, playPayada, stopPayada } from './audio.js';
 
 // === GESTIÓN DE PANTALLAS ===
 let gameInitialized = false;
+let initialAudioInitialized = false;
 
 function showStartScreen() {
     document.getElementById('startScreen').classList.remove('hidden');
     document.getElementById('gameCanvas').classList.add('hidden');
-    
-    // Detener el audio cuando volvemos al menú
     stopAmbientAudio();
+    
+    // Mostrar nuevamente el overlay de inicio
+    setupInitialScreen();
+}
+
+async function setupInitialScreen() {
+    const listener = new THREE.AudioListener();
+    try {
+        // Configurar el audio inicial
+        await setupInitialAudio(listener);
+        
+        // Remover overlay anterior si existe
+        const existingOverlay = document.querySelector('.start-overlay');
+        if (existingOverlay) {
+            existingOverlay.remove();
+        }
+        
+        // Crear y configurar el nuevo overlay
+        const startOverlay = document.createElement('div');
+        startOverlay.classList.add('start-overlay');
+        startOverlay.style.position = 'fixed';
+        startOverlay.style.top = '22%';
+        startOverlay.style.left = '50%';
+        startOverlay.style.transform = 'translate(-50%, -50%)';
+        startOverlay.style.padding = '20px';
+        startOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        startOverlay.style.color = 'white';
+        startOverlay.style.pointerEvents = 'none'; // Permitir que los clics pasen a través del overlay
+        startOverlay.style.zIndex = '1000';
+        startOverlay.textContent = 'Haz clic en cualquier lugar para comenzar la experiencia';
+        
+        document.body.appendChild(startOverlay);
+
+        // Esperar el primer clic del usuario
+        const waitForUserInteraction = new Promise(resolve => {
+            const handleClick = async () => {
+                const audioContext = THREE.AudioContext.getContext();
+                await audioContext.resume();
+                playPayada();
+                
+                // Verificar si el overlay aún existe antes de intentar eliminarlo
+                const overlayToRemove = document.querySelector('.start-overlay');
+                if (overlayToRemove) {
+                    overlayToRemove.remove();
+                }
+                
+                initialAudioInitialized = true;
+                resolve();
+            };
+            
+            // Agregar el event listener al document en lugar del overlay
+            document.addEventListener('click', handleClick, { once: true });
+        });
+
+        await waitForUserInteraction;
+
+    } catch (error) {
+        console.error('Error al configurar el audio inicial:', error);
+    }
 }
 
 function showGameScreen() {
@@ -138,9 +196,13 @@ async function initializeGame() {
 }
 
 // === CONFIGURACIÓN DE EVENTOS ===
-document.addEventListener('DOMContentLoaded', function() {
-    // Mostrar pantalla de inicio al cargar la página
+document.addEventListener('DOMContentLoaded', async function() {
     showStartScreen();
+    
+    // Configurar el audio inicial al cargar la página
+    if (!initialAudioInitialized) {
+        await setupInitialScreen();
+    }
     
     // Event listener para el botón de jugar
     const playButton = document.getElementById('playButton');
@@ -149,11 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('🌾 ¡Bienvenido al campo argentino!');
             
             try {
-                // Asegurarse de que el contexto de audio esté activado
-                const audioContext = THREE.AudioContext.getContext();
-                if (audioContext && audioContext.state === 'suspended') {
-                    await audioContext.resume();
-                }
+                stopPayada();
                 showGameScreen();
             } catch (error) {
                 console.error('Error al iniciar el audio:', error);
