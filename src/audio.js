@@ -7,12 +7,24 @@ export function setupInitialAudio(listener) {
         const audioLoader = new THREE.AudioLoader();
         const audio = new THREE.Audio(listener);
         
-        audioLoader.load('assets/sounds/sonido_payada.MP3',
+        audioLoader.load('assets/sounds/sonido_payada.WAV',
             (buffer) => {
                 console.log('Payada cargada correctamente');
                 audio.setBuffer(buffer);
-                audio.setLoop(false); // Cambiar a false para reproducir una sola vez
-                audio.setVolume(5.0);
+                audio.setLoop(false);
+                audio.setVolume(2.5); // Reducir el volumen a 0.5 (era 5.0)
+                // Configurar filtros de audio para mejorar la calidad
+                audio.filters = [];
+                // Agregar un filtro paso bajo para reducir ruidos de alta frecuencia
+                const lowPassFilter = listener.context.createBiquadFilter();
+                lowPassFilter.type = 'lowpass';
+                lowPassFilter.frequency.value = 2000;
+                audio.filters.push(lowPassFilter);
+                // Agregar un filtro para mejorar la ganancia
+                const gainNode = listener.context.createGain();
+                gainNode.gain.value = 0.8;
+                audio.filters.push(gainNode);
+                
                 payadaSound = audio;
                 resolve(audio);
             },
