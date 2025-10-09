@@ -22,7 +22,7 @@ import { startAnimationLoop } from './animate.js';
 
 // Estado
 import { state } from './state.js';
-import { setupAudio, startAmbientAudio, stopAmbientAudio, setupInitialAudio, playPayada, stopPayada } from './audio.js';
+import { setupAudio, startAmbientAudio, stopAmbientAudio, setupInitialAudio, playPayada, stopPayada, setupVinoSound } from './audio.js';
 
 // === GESTIÓN DE PANTALLAS ===
 let gameInitialized = false;
@@ -122,6 +122,7 @@ async function initializeGame() {
     const listener = new THREE.AudioListener();
     try {
         await setupAudio(listener);
+        await setupVinoSound(listener);
         console.log('Audio configurado correctamente');
     } catch (error) {
         console.error('Error al configurar el audio:', error);

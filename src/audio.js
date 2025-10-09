@@ -57,6 +57,35 @@ export function stopPayada() {
     }
 }
 
+export function setupVinoSound(listener) {
+    return new Promise((resolve, reject) => {
+        const audioLoader = new THREE.AudioLoader();
+        const sound = new THREE.PositionalAudio(listener);
+        
+        audioLoader.load('assets/sounds/vino.mp3',
+            (buffer) => {
+                sound.setBuffer(buffer);
+                sound.setVolume(3); // Aumentado ligeramente desde 1.0
+                sound.setRefDistance(1); // Distancia a la que el sonido comienza a atenuarse
+                sound.setRolloffFactor(1); // Factor de atenuación con la distancia
+                sound.setLoop(true);
+                state.sonidoVino = sound;
+                
+                // Agregar el sonido al vaso
+                if (state.modeloVaso) {
+                    state.modeloVaso.add(sound);
+                }
+                resolve(sound);
+            },
+            undefined,
+            (error) => {
+                console.error('Error cargando sonido del vino:', error);
+                reject(error);
+            }
+        );
+    });
+}
+
 export function setupAudio(listener) {
     return new Promise((resolve, reject) => {
         const audioLoader = new THREE.AudioLoader();

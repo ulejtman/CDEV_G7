@@ -12,6 +12,7 @@ export const state = {
   liquidoMesh: null,
   liquidoAltura: 0,
   liquidoAlturaMax: 1.8,
+  sonidoVino: null, // Sonido direccional para el vino
 
   // Interacción manos
   modoDeteccionManos: false,

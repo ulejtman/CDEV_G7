@@ -22,11 +22,27 @@ export function startAnimationLoop(onUpdate) {
       updateBottleWithHands(state.handX, state.handY, state.isFist, state.handAngle);
     }
 
-    // Establecer el puntero activo basado en la rotación de la cámara (si no está rotando)
-    if (state.controls && !state.controls.isRotating && !state.controls.isRotatingBack) {
+    // Establecer el puntero activo y gestionar flechas basado en la rotación de la cámara
+    const rightArrow = document.getElementById('rightArrow');
+    const leftArrow = document.getElementById('leftArrow');
+
+    // Ocultar ambas flechas durante la rotación
+    if (state.controls && (state.controls.isRotating || state.controls.isRotatingBack)) {
+      rightArrow.classList.add('hidden');
+      leftArrow.classList.add('hidden');
+    } else if (state.controls) {
       const isRotated = Math.abs(state.controls.target.x - (-8)) < 0.5 && 
                        Math.abs(state.controls.target.z - (-9)) < 0.5;
       state.activePointer = isRotated ? 'red' : 'blue';
+      
+      // Mostrar flechas solo cuando la cámara está estática
+      if (isRotated) {
+        rightArrow.classList.add('hidden');
+        leftArrow.classList.remove('hidden');
+      } else {
+        rightArrow.classList.remove('hidden');
+        leftArrow.classList.add('hidden');
+      }
     }
 
     // Actualizar posición del puntero
@@ -112,6 +128,14 @@ export function startAnimationLoop(onUpdate) {
           state.liquidoAltura += 0.01;
           state.liquidoMesh.scale.y = state.liquidoAltura * 10;
           state.liquidoMesh.position.y = state.modeloVaso.position.y;
+          
+          // Reproducir sonido del vino si existe y no está sonando
+          if (state.sonidoVino && !state.sonidoVino.isPlaying) {
+            state.sonidoVino.play();
+          }
+        } else if (state.sonidoVino && state.sonidoVino.isPlaying) {
+          // Detener el sonido cuando no se está sirviendo
+          state.sonidoVino.stop();
         }
       }
     }

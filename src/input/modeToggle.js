@@ -233,8 +233,22 @@ export function updateBottleWithHands(handX, handY, isFist, handAngle) {
             state.liquidoMesh.scale.y = state.liquidoAltura * 17; // Usar escala original
             state.liquidoMesh.position.y = 0.3; // Mantener posición Y fija como en el original
           }
+          // Reproducir sonido del vino si existe y no está sonando
+          if (state.sonidoVino && !state.sonidoVino.isPlaying) {
+            state.sonidoVino.play();
+          }
+        } else {
+          // Si no estamos llenando (porque está lleno), detener el sonido
+          if (state.sonidoVino && state.sonidoVino.isPlaying) {
+            state.sonidoVino.stop();
+          }
         }
         console.log('Llenando vaso - Altura:', state.liquidoAltura, 'Escala:', state.liquidoMesh.scale.y);
+      } else {
+        // Si no estamos en posición de llenado, detener el sonido
+        if (state.sonidoVino && state.sonidoVino.isPlaying) {
+          state.sonidoVino.stop();
+        }
       }
     }
   } else {
